@@ -22,10 +22,18 @@
       "Default": "true",
       "Type": "String"
     },
+    "SlaveInstanceType": {
+      "Default": "m3.large",
+      "Type": "String"
+    },
     "SlaveInstanceCount": {
       "Description": "Required: Specify the number of private agent nodes or accept the default.",
       "Default": "5",
       "Type": "Number"
+    },
+    "PublicSlaveInstanceType": {
+      "Default": "m3.large",
+      "Type": "String"
     },
     "PublicSlaveInstanceCount": {
       "Description": "Required: Specify the number of public agent nodes or accept the default.",
@@ -414,11 +422,7 @@
           }
         ],
         "InstanceType": {
-          "Fn::FindInMap": [
-            "Parameters",
-            "SlaveInstanceType",
-            "default"
-          ]
+          "Ref": "SlaveInstanceType"
         },
         "SecurityGroups": [
           {
@@ -1940,11 +1944,7 @@
           }
         ],
         "InstanceType": {
-          "Fn::FindInMap": [
-            "Parameters",
-            "PublicSlaveInstanceType",
-            "default"
-          ]
+          "Ref": "PublicSlaveInstanceType"
         },
         "SecurityGroups": [
           {
@@ -2370,15 +2370,9 @@
       "PublicSubnetRange": {
         "default": "10.0.4.0/22"
       },
-      "PublicSlaveInstanceType": {
-        "default": "m3.xlarge"
-      },
       "VPCSubnetRange": {
         "default": "10.0.0.0/16"
       },
-      "SlaveInstanceType": {
-        "default": "m3.xlarge"
-      }
     }
   },
   "Metadata": {

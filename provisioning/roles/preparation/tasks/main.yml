@@ -19,6 +19,7 @@
   pip: name={{ item }} state=present
   with_items:
     - pexpect
+    - boto
     - boto3
     - botocore
     - virtualenv
