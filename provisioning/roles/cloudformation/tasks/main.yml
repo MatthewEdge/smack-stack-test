@@ -4,7 +4,7 @@
 - s3: bucket={{ bucket }} object=dcos-template.json src=/vagrant/provisioning/roles/cloudformation/files/dcos-template.json mode=put
 
 
-- name: launch ansible cloudformation example
+- name: Run CloudFormation Template
   cloudformation:
     stack_name: "{{ stackName }}"
     state: "present"
@@ -12,10 +12,12 @@
     template_url: "https://s3.amazonaws.com/{{ bucket }}/dcos-template.json"
     template_parameters:
       KeyName: "{{ keyName }}"
+      MasterInstanceType: "{{ masterInstanceType }}"
       PublicSlaveInstanceType: "{{ publicSlaveInstanceType }}"
       PublicSlaveInstanceCount: "{{ publicSlaveInstanceCount }}"
       SlaveInstanceType: "{{ slaveInstanceType }}"
       SlaveInstanceCount: "{{ slaveInstanceCount }}"
+      NatInstanceType: "{{ natInstanceType }}"
       OAuthEnabled: "{{ oauthEnabled }}"
       AdminLocation: "{{ adminLocation }}"
     tags:

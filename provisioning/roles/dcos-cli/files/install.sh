@@ -109,7 +109,7 @@ ARGS=( "$@" );
 
 VIRTUAL_ENV_PATH=$(python -c "import os; print(os.path.realpath('"${ARGS[0]}"'))")
 if [[ $VIRTUAL_ENV_PATH =~ \  ]];
-	then echo "Spaces are not permitted in the installation path. Please try again with another path.";
+    then echo "Spaces are not permitted in the installation path. Please try again with another path.";
     exit 1;
 fi
 DCOS_URL=${ARGS[1]}
@@ -123,8 +123,8 @@ VERSION_REGEX="s#[^0-9]*\([0-9]*\)[.]\([0-9]*\)[.]\([0-9]*\)\([0-9A-Za-z-]*\)#\1
 
 eval MAJOR=`echo $VIRTUALENV_VERSION | sed -e $VERSION_REGEX`
 if [ $MAJOR -lt 12 ];
-	then echo "Virtualenv version must be 12 or greater. Aborting.";
-	exit 1;
+    then echo "Virtualenv version must be 12 or greater. Aborting.";
+    exit 1;
 fi
 
 echo "Installing DCOS CLI from PyPI...";
@@ -148,15 +148,18 @@ virtualenv "$VIRTUAL_ENV_PATH"
 
 
 # Install the DCOS CLI package, using version if set
-if [ -z "$DCOS_CLI_VERSION" ]; then
-    if $(compare_version 1.6.1); then
-        "$VIRTUAL_ENV_PATH/bin/pip" install --quiet "dcoscli<0.4.0"
-    else
-        "$VIRTUAL_ENV_PATH/bin/pip" install --quiet "dcoscli"
-    fi
-else
-    "$VIRTUAL_ENV_PATH/bin/pip" install --quiet "dcoscli==$DCOS_CLI_VERSION"
-fi
+# if [ -z "$DCOS_CLI_VERSION" ]; then
+#     if $(compare_version 1.6.1); then
+#         "$VIRTUAL_ENV_PATH/bin/pip" install --quiet "dcoscli<0.4.0"
+#     else
+#         "$VIRTUAL_ENV_PATH/bin/pip" install --quiet "dcoscli"
+#     fi
+# else
+#     "$VIRTUAL_ENV_PATH/bin/pip" install --quiet "dcoscli==$DCOS_CLI_VERSION"
+# fi
+
+curl -O https://downloads.dcos.io/binaries/cli/linux/x86-64/dcos-1.8/dcos >> /usr/local/bin/dcos
+chmod +x /usr/local/bin/dcos
 
 ENV_SETUP="$VIRTUAL_ENV_PATH/bin/env-setup"
 source "$ENV_SETUP"

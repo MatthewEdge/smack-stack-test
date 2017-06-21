@@ -14,7 +14,7 @@
       "Type": "String"
     },
     "OAuthEnabled": {
-      "Description": "\nEnable OAuth authentication",
+      "Description": "Enable OAuth authentication",
       "AllowedValues": [
         "true",
         "false"
@@ -22,8 +22,12 @@
       "Default": "true",
       "Type": "String"
     },
+    "MasterInstanceType": {
+      "Description": "AWS Instance Type for the Master Node",
+      "Type": "String"
+    },
     "SlaveInstanceType": {
-      "Default": "m3.large",
+      "Description": "AWS Instance Type for the internal Worker Nodes",
       "Type": "String"
     },
     "SlaveInstanceCount": {
@@ -32,13 +36,17 @@
       "Type": "Number"
     },
     "PublicSlaveInstanceType": {
-      "Default": "m3.large",
+      "Description": "AWS Instance Type for the public-facing Worker Nodes",
       "Type": "String"
     },
     "PublicSlaveInstanceCount": {
       "Description": "Required: Specify the number of public agent nodes or accept the default.",
       "Default": "1",
       "Type": "Number"
+    },
+    "NatInstanceType": {
+      "Description": "AWS Instance Type for the NAT Networking node",
+      "Type": "String"
     }
   },
   "Resources": {
@@ -1283,11 +1291,7 @@
           }
         ],
         "InstanceType": {
-          "Fn::FindInMap": [
-            "Parameters",
-            "MasterInstanceType",
-            "default"
-          ]
+          "Ref": "MasterInstanceType"
         },
         "SecurityGroups": [
           {
@@ -1807,7 +1811,9 @@
             "DeleteOnTermination": "true"
           }
         ],
-        "InstanceType": "t2.medium",
+        "InstanceType": {
+          "Ref": "NatInstanceType"
+        },
         "SourceDestCheck": "false"
       },
       "DependsOn": "GatewayToInternet",
@@ -2360,9 +2366,6 @@
     "Parameters": {
       "StackCreationTimeout": {
         "default": "PT45M"
-      },
-      "MasterInstanceType": {
-        "default": "t2.large"
       },
       "PrivateSubnetRange": {
         "default": "10.0.0.0/22"

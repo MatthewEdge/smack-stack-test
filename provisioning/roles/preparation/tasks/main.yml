@@ -1,11 +1,11 @@
 ---
-- name: Creates .aws directory
+- name: Create .aws directory
   file: path=/home/vagrant/.aws state=directory
 
 - name: Create aws credentials configuration
   template: src=aws_credentials.template dest=/home/vagrant/.aws/credentials force=yes
 
-- name: Installs pip
+- name: Install pip
   apt: pkg={{ item }} state=installed update_cache=true
   with_items:
     - python-pip
@@ -15,7 +15,7 @@
   become: yes
   become_method: sudo
 
-- name: Installs pip dependencies
+- name: Install pip dependencies
   pip: name={{ item }} state=present
   with_items:
     - pexpect

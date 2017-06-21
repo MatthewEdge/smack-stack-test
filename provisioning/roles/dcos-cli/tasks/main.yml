@@ -21,10 +21,12 @@
     timeout: 300
     responses:
       (.*)(PATH)(.*): 'yes'
+  become: yes
+  become_method: sudo
 
 - name: Skips dcos cli web authentication
   expect:
-    command: /home/vagrant/dcos-cli/bin/dcos
+    command: /usr/local/bin/dcos
     timeout: 300
     responses:
       (.*)(code)(.*): ''
@@ -32,4 +34,3 @@
 
 - name: This is the URL of your master ELB
   debug: msg={{internal_master_elb.stdout}}
-
